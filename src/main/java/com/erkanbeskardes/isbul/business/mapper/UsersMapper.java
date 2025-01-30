@@ -22,7 +22,7 @@ public class UsersMapper {
         usersDto.setPassword(usersEntity.getPassword());
         usersDto.setAddress(usersEntity.getAddress());
         usersDto.setPhone(usersEntity.getPhone());
-        usersDto.setRoleId(usersEntity.getRoleId());
+        usersDto.setRole(usersEntity.getRole());
 
 
 
@@ -46,7 +46,7 @@ public class UsersMapper {
         usersEntity.setPassword(usersDto.getPassword());
         usersEntity.setAddress(usersDto.getAddress());
         usersEntity.setPhone(usersDto.getPhone());
-        usersEntity.setRoleId(usersDto.getRoleId());
+        usersEntity.setRole(usersDto.getRole());
 
 
         return usersEntity;
