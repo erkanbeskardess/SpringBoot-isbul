@@ -1,11 +1,9 @@
 package com.erkanbeskardes.isbul.business.dto;
 
 
-import com.erkanbeskardes.isbul.business.entity.ApplicationsEntity;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -25,8 +23,6 @@ public class JobPostingsDto extends BaseDto {
     private String company;
 
     private String location;
-
-    private List<ApplicationsEntity> applications;
 
     private String createdBy;
 }
