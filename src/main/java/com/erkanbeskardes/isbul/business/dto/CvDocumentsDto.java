@@ -7,8 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CvDocumentsDto {
-    private Long applicationId;
+public class CvDocumentsDto  extends BaseDto{
     private String fileName;
     private String fileType;
     private String fileUrl;

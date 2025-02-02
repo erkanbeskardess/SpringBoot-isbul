@@ -5,24 +5,29 @@ import com.erkanbeskardes.isbul.service.CvDocumentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cv-documents")
+@RequestMapping("/applicant/cv-documents")
 @RequiredArgsConstructor
 public class CvDocumentsController {
 
     private final CvDocumentsService cvDocumentService;
 
+
     @PostMapping
-    public ResponseEntity<CvDocumentsDto> uploadCv(@RequestBody CvDocumentsDto dto) {
-        return ResponseEntity.ok(cvDocumentService.uploadCv(dto));
+    public ResponseEntity<String> uploadCv(@RequestPart("file") MultipartFile file,@RequestPart("data") CvDocumentsDto dto) {
+        return cvDocumentService.uploadCv(dto,file);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CvDocumentsDto> getCvById(@PathVariable Long id) {
         return ResponseEntity.ok(cvDocumentService.getCvById(id));
+    }
+    @DeleteMapping("/{id}")
+    public void deleteCv(@PathVariable Long id) {
+        cvDocumentService.deleteCv(id);
     }
 
     @GetMapping

@@ -2,14 +2,42 @@ package com.erkanbeskardes.isbul.business.mapper;
 
 import com.erkanbeskardes.isbul.business.dto.CvDocumentsDto;
 import com.erkanbeskardes.isbul.business.entity.CvDocumentsEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.context.annotation.Configuration;
 
-@Mapper(componentModel = "spring")
-public interface CvDocumentsMapper {
-    CvDocumentsMapper INSTANCE = Mappers.getMapper(CvDocumentsMapper.class);
+@Configuration
+public class CvDocumentsMapper {
 
-    CvDocumentsEntity toEntity(CvDocumentsDto dto);
+    public CvDocumentsEntity cvToEntity(CvDocumentsDto cvDto){
+        CvDocumentsEntity cvEntity = new CvDocumentsEntity();
 
-    CvDocumentsDto toDto(CvDocumentsEntity entity);
+        cvEntity.setId(cvDto.getId());
+        cvEntity.setFileName(cvDto.getFileName());
+        cvEntity.setFileUrl(cvDto.getFileUrl());
+        cvEntity.setFileType(cvDto.getFileType());
+        cvEntity.setSystemCreatedDate(cvDto.getSystemCreatedDate());
+        cvEntity.setSystemCreatedBy("systemCreatedBy");
+
+
+
+        return cvEntity;
+
+
+
+    }
+
+    public CvDocumentsDto cvToDto(CvDocumentsEntity cvEntity){
+        CvDocumentsDto cvDto = new CvDocumentsDto();
+
+        cvDto.setId(cvEntity.getId());
+        cvDto.setFileName(cvEntity.getFileName());
+        cvDto.setFileUrl(cvEntity.getFileUrl());
+        cvDto.setFileType(cvEntity.getFileType());
+        cvDto.setSystemCreatedDate(cvEntity.getSystemCreatedDate());
+        cvDto.setSystemCreatedBy("systemCreatedBy");
+
+        return cvDto;
+
+
+
+    }
 }
