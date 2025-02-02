@@ -20,7 +20,6 @@ public class UsersDto extends BaseDto {
     private String firstName;
     private String lastName;
     private String phone;
-    private String address;
     private Roles role;
     private List<ApplicationsEntity> applications;
 }

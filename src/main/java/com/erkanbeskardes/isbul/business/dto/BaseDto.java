@@ -15,8 +15,8 @@ public abstract class BaseDto implements Serializable {
 
     protected Long id;
 
-
     protected Date systemCreatedDate;
 
     protected String systemCreatedBy;
+
 } //end BaseDto

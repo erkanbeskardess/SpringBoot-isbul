@@ -2,7 +2,9 @@ package com.erkanbeskardes.isbul.business.mapper;
 
 import com.erkanbeskardes.isbul.business.dto.UsersDto;
 import com.erkanbeskardes.isbul.business.entity.UsersEntity;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class UsersMapper {
 
     public UsersDto usersEntityToUsersDto(UsersEntity usersEntity){
@@ -11,7 +13,7 @@ public class UsersMapper {
         //base dto
         usersDto.setId(usersEntity.getId());
         usersDto.setSystemCreatedDate(usersEntity.getSystemCreatedDate());
-        usersDto.setSystemCreatedBy(String.valueOf(usersEntity.getSystemCreatedBy()));
+       // usersDto.setSystemCreatedBy(String.valueOf(usersEntity.getSystemCreatedBy()));
 
 
         //TodoDto
@@ -20,7 +22,6 @@ public class UsersMapper {
         usersDto.setFirstName(usersEntity.getFirstName());
         usersDto.setLastName(usersEntity.getLastName());
         usersDto.setPassword(usersEntity.getPassword());
-        usersDto.setAddress(usersEntity.getAddress());
         usersDto.setPhone(usersEntity.getPhone());
         usersDto.setRole(usersEntity.getRole());
 
@@ -35,7 +36,7 @@ public class UsersMapper {
         //UsersDto
         usersEntity.setId(usersDto.getId());
         usersEntity.setSystemCreatedDate(usersDto.getSystemCreatedDate());
-        usersEntity.setSystemCreatedBy(String.valueOf(usersDto.getSystemCreatedBy()));
+        //usersEntity.setSystemCreatedBy(String.valueOf(usersDto.getSystemCreatedBy()));
 
 
         //UsersEntity
@@ -44,7 +45,6 @@ public class UsersMapper {
         usersEntity.setFirstName(usersDto.getFirstName());
         usersEntity.setLastName(usersDto.getLastName());
         usersEntity.setPassword(usersDto.getPassword());
-        usersEntity.setAddress(usersDto.getAddress());
         usersEntity.setPhone(usersDto.getPhone());
         usersEntity.setRole(usersDto.getRole());
 

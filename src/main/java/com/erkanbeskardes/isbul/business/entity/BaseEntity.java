@@ -24,14 +24,12 @@ public abstract class BaseEntity implements Serializable {
     @Column(
             name = "system_created_date",
             updatable = false,
-            nullable = false,
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     protected Date systemCreatedDate;
 
     @Column(
             name = "system_created_by",
-            updatable = false,
-            nullable = false)
+            updatable = false)
     @CreatedBy
     protected String systemCreatedBy;
 

@@ -15,16 +15,11 @@ public class UsersController {
 
     private final UsersService usersService;
 
-    @PostMapping
-    public ResponseEntity<UsersDto> createUser(@RequestBody UsersDto userRequestDto) {
-        return ResponseEntity.ok(usersService.createUser(userRequestDto));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<UsersDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(usersService.getUserById(id));
     }
-
+   // @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UsersDto>> getAllUsers() {
         return ResponseEntity.ok(usersService.getAllUsers());

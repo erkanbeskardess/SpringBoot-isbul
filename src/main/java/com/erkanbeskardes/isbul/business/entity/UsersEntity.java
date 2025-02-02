@@ -35,14 +35,22 @@ public class UsersEntity extends BaseEntity implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "address")
-    private String address;
-
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ApplicationsEntity> applications;
 
     @Column(name = "role")
     private Roles role;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.role == null) {
+            this.role = Roles.APPLICANT;  // Varsayılan değeri belirtiyoruz
+        }
+        if (this.systemCreatedBy == null) {
+            this.systemCreatedBy = "system";
+        }
+
+    }
 
     //UserDetail...
     @Override
@@ -54,6 +62,11 @@ public class UsersEntity extends BaseEntity implements UserDetails {
     public String getUsername() {
         return "";
     }
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {
