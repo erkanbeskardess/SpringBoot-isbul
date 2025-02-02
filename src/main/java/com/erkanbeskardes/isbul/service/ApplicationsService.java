@@ -6,8 +6,10 @@ import com.erkanbeskardes.isbul.business.enums.ApplicationStatusType;
 import com.erkanbeskardes.isbul.business.mapper.ApplicationsMapper;
 import com.erkanbeskardes.isbul.repository.IApplicationsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -19,10 +21,19 @@ public class ApplicationsService {
     private final IApplicationsRepository applicationRepository;
     private final ApplicationsMapper applicationMapper;
 
-    public ApplicationsDto createApplication(ApplicationsDto dto) {
+
+
+
+    public String createApplication(ApplicationsDto dto) {
+
         ApplicationsEntity application = applicationMapper.applicationsDtoToApplicationEntity(dto);
-        application = applicationRepository.save(application);
-        return applicationMapper.applicationsEntityToApplicationDto(application);
+        application.setSystemCreatedBy(UUID.randomUUID().toString());
+        SecureRandom secureRandom = new SecureRandom();
+        Integer code = 100000 + secureRandom.nextInt(900000);
+        application.setRandomCode(String.valueOf(code));
+         applicationRepository.save(application);
+
+                return String.valueOf(code);
     }
 
     public ApplicationsDto getApplicationById(Long id) {
@@ -37,15 +48,15 @@ public class ApplicationsService {
                 .map(applicationMapper::applicationsEntityToApplicationDto)
                 .collect(Collectors.toList());
     }
-    public ApplicationsDto getApplicationByCode(String randomCode) {
-
-            return applicationRepository.findByRandomCode(randomCode);
+    public ResponseEntity<ApplicationsDto> getApplicationByCode(String randomCode) {
+        ApplicationsDto dto = applicationMapper.applicationsEntityToApplicationDto(applicationRepository.findByRandomCode(randomCode));
+            return ResponseEntity.ok().body(dto);
 
     }
 
+
     public void apply(ApplicationsDto applicationDto) {
         ApplicationsEntity application = new ApplicationsEntity();
-        application.setUser(applicationDto.getUser());
         application.setJobPosting(applicationDto.getJobPosting());
 
         application.setRandomCode(UUID.randomUUID().toString()); // Rastgele kod oluştur

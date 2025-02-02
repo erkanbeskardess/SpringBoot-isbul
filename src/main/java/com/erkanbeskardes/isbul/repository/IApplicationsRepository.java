@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IApplicationsRepository  extends JpaRepository<ApplicationsEntity,Long> {
 
-    ApplicationsDto findByRandomCode(String randomCode);
+    ApplicationsEntity findByRandomCode(String randomCode);
 
 }

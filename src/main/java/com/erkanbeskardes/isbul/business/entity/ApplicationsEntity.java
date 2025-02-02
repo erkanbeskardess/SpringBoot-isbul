@@ -18,7 +18,7 @@ public class ApplicationsEntity extends BaseEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "job_posting_id")
+    @JoinColumn(name = "job_postings_id")
     private JobPostingsEntity jobPosting;
 
     @ManyToOne
@@ -28,10 +28,20 @@ public class ApplicationsEntity extends BaseEntity {
     private String randomCode;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ApplicationStatusType applicationStatusType;
 
-    @OneToMany(mappedBy = "applications", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fileName", cascade = CascadeType.ALL)
     private List<CvDocumentsEntity> cvDocuments;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.applicationStatusType == null) {
+            this.applicationStatusType = ApplicationStatusType.PENDING;
+        }
+        if (this.systemCreatedBy == null) {
+            this.systemCreatedBy = "system";
+        }
+
+    }
 
 }
