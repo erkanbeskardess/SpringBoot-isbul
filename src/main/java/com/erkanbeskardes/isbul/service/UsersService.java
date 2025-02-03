@@ -49,9 +49,8 @@ public class UsersService {
 
         // JWT Token
         String token = jwtService.generateToken(user);
-        System.out.println("JWT Token: " + token);
 
-        return new AuthResponseDto(token,user.getRole());
+        return new AuthResponseDto(token,user);
 
     }
 
