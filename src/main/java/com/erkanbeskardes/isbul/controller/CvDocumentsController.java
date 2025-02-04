@@ -22,8 +22,8 @@ public class CvDocumentsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CvDocumentsDto> getCvById(@PathVariable Long id) {
-        return ResponseEntity.ok(cvDocumentService.getCvById(id));
+    public CvDocumentsDto getCvById(@PathVariable Long id) {
+        return cvDocumentService.getCvById(id);
     }
     @DeleteMapping("/{id}")
     public void deleteCv(@PathVariable Long id) {

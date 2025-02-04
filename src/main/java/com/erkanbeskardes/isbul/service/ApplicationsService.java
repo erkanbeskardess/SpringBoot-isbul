@@ -8,6 +8,7 @@ import com.erkanbeskardes.isbul.business.mapper.ApplicationsMapper;
 import com.erkanbeskardes.isbul.business.mapper.UsersMapper;
 import com.erkanbeskardes.isbul.repository.IApplicationsRepository;
 import com.erkanbeskardes.isbul.repository.IUsersRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,17 @@ public class ApplicationsService {
     private final UsersService usersService;
     private final UsersMapper usersMapper;
 
+    @Transactional
     public String createApplication(ApplicationsDto dto) {
         UsersEntity user = usersMapper.usersDtoToUsersEntity(usersService.getUserById(dto.getUserId()));
         ApplicationsEntity application = applicationMapper.applicationsDtoToApplicationEntity(dto, user, dto.getCvId());
+
+        if (application.getCvDocumentIds() == null) {
+            application.setCvDocumentIds(new ArrayList<>());
+        }
+        applicationRepository.addCvIdToApplication(application.getJobPosting().getId(), application.getUser().getId(), dto.getCvId());
+
+
 
         if (checkApplication(dto, user.getId())) {
             return applicationRepository.getRandomCodeByJobPostingIdAndUserId(application.getJobPosting().getId(), user.getId()) + "1";
@@ -42,11 +51,7 @@ public class ApplicationsService {
         Integer code = 100000 + secureRandom.nextInt(900000);
         application.setRandomCode(String.valueOf(code));
 
-        if (application.getCvDocumentIds() == null) {
-            application.setCvDocumentIds(new ArrayList<>());
-        }
 
-        application.getCvDocumentIds().add(dto.getCvId());
 
         applicationRepository.save(application);
 

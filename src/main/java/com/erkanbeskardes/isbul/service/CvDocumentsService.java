@@ -29,7 +29,6 @@ public class CvDocumentsService {
                 return ResponseEntity.badRequest().body("Dosya yüklenemedi!");
             }
             CvDocumentsEntity cvDocument = cvDocumentMapper.cvToEntity(dto);
-            cvDocumentRepository.save(cvDocument);
             try {
                 File uploadDir = new File(UPLOAD_DIR);
                 if (!uploadDir.exists()) {
@@ -39,6 +38,8 @@ public class CvDocumentsService {
                 Path filePath = Path.of(UPLOAD_DIR + file.getOriginalFilename());
 
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                cvDocument.setFileUrl(filePath.toString());
+                cvDocumentRepository.save(cvDocument);
 
                 return ResponseEntity.ok("Dosya başarıyla kaydedildi: " + filePath.toString());
 

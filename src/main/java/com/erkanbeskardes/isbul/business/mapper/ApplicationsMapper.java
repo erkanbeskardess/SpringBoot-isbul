@@ -6,6 +6,7 @@ import com.erkanbeskardes.isbul.business.entity.UsersEntity;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class ApplicationsMapper {
@@ -16,6 +17,8 @@ public class ApplicationsMapper {
         applicationsDto.setId(applicationsEntity.getId());
         applicationsDto.setSystemCreatedDate(applicationsEntity.getSystemCreatedDate());
         applicationsDto.setUserId(applicationsEntity.getUser().getId());
+        List<Long> cvIds = applicationsEntity.getCvDocumentIds();
+        applicationsDto.setCvId(applicationsEntity.getCvDocumentIds().get(cvIds.size() - 1));
         //applicationsDto.setSystemCreatedBy(applicationsEntity.getSystemCreatedBy());
 
         //TodoDto
@@ -38,7 +41,9 @@ public class ApplicationsMapper {
         if (applicationsEntity.getCvDocumentIds() == null) {
             applicationsEntity.setCvDocumentIds(new ArrayList<>());
         }
-        applicationsEntity.getCvDocumentIds().add(cvId);
+        if (!applicationsEntity.getCvDocumentIds().contains(cvId)) {
+            applicationsEntity.getCvDocumentIds().add(cvId);
+        }
 
         //applicationsEntity.setSystemCreatedBy(applicationsDto.getSystemCreatedBy());
 
