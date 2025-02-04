@@ -2,15 +2,20 @@ package com.erkanbeskardes.isbul.service;
 
 import com.erkanbeskardes.isbul.business.dto.ApplicationsDto;
 import com.erkanbeskardes.isbul.business.entity.ApplicationsEntity;
+import com.erkanbeskardes.isbul.business.entity.UsersEntity;
 import com.erkanbeskardes.isbul.business.enums.ApplicationStatusType;
 import com.erkanbeskardes.isbul.business.mapper.ApplicationsMapper;
+import com.erkanbeskardes.isbul.business.mapper.UsersMapper;
 import com.erkanbeskardes.isbul.repository.IApplicationsRepository;
+import com.erkanbeskardes.isbul.repository.IUsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -19,21 +24,39 @@ import java.util.stream.Collectors;
 public class ApplicationsService {
 
     private final IApplicationsRepository applicationRepository;
+    private final IUsersRepository usersRepository;
     private final ApplicationsMapper applicationMapper;
-
-
-
+    private final UsersService usersService;
+    private final UsersMapper usersMapper;
 
     public String createApplication(ApplicationsDto dto) {
+        UsersEntity user = usersMapper.usersDtoToUsersEntity(usersService.getUserById(dto.getUserId()));
+        ApplicationsEntity application = applicationMapper.applicationsDtoToApplicationEntity(dto, user, dto.getCvId());
 
-        ApplicationsEntity application = applicationMapper.applicationsDtoToApplicationEntity(dto);
+        if (checkApplication(dto, user.getId())) {
+            return applicationRepository.getRandomCodeByJobPostingIdAndUserId(application.getJobPosting().getId(), user.getId()) + "1";
+        }
+
         application.setSystemCreatedBy(UUID.randomUUID().toString());
         SecureRandom secureRandom = new SecureRandom();
         Integer code = 100000 + secureRandom.nextInt(900000);
         application.setRandomCode(String.valueOf(code));
-         applicationRepository.save(application);
 
-                return String.valueOf(code);
+        if (application.getCvDocumentIds() == null) {
+            application.setCvDocumentIds(new ArrayList<>());
+        }
+
+        application.getCvDocumentIds().add(dto.getCvId());
+
+        applicationRepository.save(application);
+
+        if (user.getApplicationIds() == null) {
+            user.setApplicationIds(new ArrayList<>());
+        }
+
+        user.getApplicationIds().add(application.getId());
+        usersRepository.save(user);
+        return String.valueOf(code);
     }
 
     public ApplicationsDto getApplicationById(Long id) {
@@ -42,15 +65,24 @@ public class ApplicationsService {
         return applicationMapper.applicationsEntityToApplicationDto(application);
     }
 
+    public boolean checkApplication(ApplicationsDto dto, Long userId) {
+
+        Optional<ApplicationsEntity> existingApplication = applicationRepository.findByJobPostingIdAndUserId(dto.getJobPosting().getId(), userId);
+        return existingApplication.isPresent();
+
+
+    }
+
     public List<ApplicationsDto> getAllApplications() {
         return applicationRepository.findAll()
                 .stream()
                 .map(applicationMapper::applicationsEntityToApplicationDto)
                 .collect(Collectors.toList());
     }
+
     public ResponseEntity<ApplicationsDto> getApplicationByCode(String randomCode) {
         ApplicationsDto dto = applicationMapper.applicationsEntityToApplicationDto(applicationRepository.findByRandomCode(randomCode));
-            return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(dto);
 
     }
 

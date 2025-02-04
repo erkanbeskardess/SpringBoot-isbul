@@ -18,7 +18,7 @@ public class UsersMapper {
 
         //TodoDto
         usersDto.setEmail(usersEntity.getEmail());
-        usersDto.setApplications(usersEntity.getApplications());
+        usersDto.setApplicationsIds(usersEntity.getApplicationIds());
         usersDto.setFirstName(usersEntity.getFirstName());
         usersDto.setLastName(usersEntity.getLastName());
         usersDto.setPassword(usersEntity.getPassword());
@@ -41,7 +41,7 @@ public class UsersMapper {
 
         //UsersEntity
         usersEntity.setEmail(usersDto.getEmail());
-        usersEntity.setApplications(usersDto.getApplications());
+        usersEntity.setApplicationIds(usersDto.getApplicationsIds());
         usersEntity.setFirstName(usersDto.getFirstName());
         usersEntity.setLastName(usersDto.getLastName());
         usersEntity.setPassword(usersDto.getPassword());

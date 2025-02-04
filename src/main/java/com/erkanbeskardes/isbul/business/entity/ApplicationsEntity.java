@@ -4,6 +4,7 @@ import com.erkanbeskardes.isbul.business.enums.ApplicationStatusType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,8 +31,9 @@ public class ApplicationsEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ApplicationStatusType applicationStatusType;
 
-    @OneToMany(mappedBy = "fileName", cascade = CascadeType.ALL)
-    private List<CvDocumentsEntity> cvDocuments;
+    @Column(name = "cv_document_ids")
+    private List<Long> cvDocumentIds = new ArrayList<>();
+
 
     @PrePersist
     public void prePersist() {

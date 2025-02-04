@@ -35,8 +35,8 @@ public class UsersEntity extends BaseEntity implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<ApplicationsEntity> applications;
+    @Column(name = "applications_id")
+    private List<Long> applicationIds;
 
     @Column(name = "role")
     private Roles role;

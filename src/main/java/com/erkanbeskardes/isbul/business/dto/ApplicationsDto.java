@@ -10,9 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ApplicationsDto extends BaseDto {
+    private Long userId;
     private JobPostingsEntity jobPosting;
     private ApplicationStatusType applicationStatusType;
     private String randomCode;
+    private Long cvId;
 }
 
 

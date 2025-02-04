@@ -2,7 +2,10 @@ package com.erkanbeskardes.isbul.business.mapper;
 
 import com.erkanbeskardes.isbul.business.dto.ApplicationsDto;
 import com.erkanbeskardes.isbul.business.entity.ApplicationsEntity;
+import com.erkanbeskardes.isbul.business.entity.UsersEntity;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
 
 @Configuration
 public class ApplicationsMapper {
@@ -12,6 +15,7 @@ public class ApplicationsMapper {
         //base dto
         applicationsDto.setId(applicationsEntity.getId());
         applicationsDto.setSystemCreatedDate(applicationsEntity.getSystemCreatedDate());
+        applicationsDto.setUserId(applicationsEntity.getUser().getId());
         //applicationsDto.setSystemCreatedBy(applicationsEntity.getSystemCreatedBy());
 
         //TodoDto
@@ -23,12 +27,19 @@ public class ApplicationsMapper {
         return applicationsDto;
     }
 
-    public ApplicationsEntity applicationsDtoToApplicationEntity(ApplicationsDto applicationsDto) {
+
+    public ApplicationsEntity applicationsDtoToApplicationEntity(ApplicationsDto applicationsDto, UsersEntity usersEntity, Long cvId) {
         ApplicationsEntity applicationsEntity = new ApplicationsEntity();
 
         //applicationsDto
         applicationsEntity.setId(applicationsDto.getId());
         applicationsEntity.setSystemCreatedDate(applicationsDto.getSystemCreatedDate());
+        applicationsEntity.setUser(usersEntity);
+        if (applicationsEntity.getCvDocumentIds() == null) {
+            applicationsEntity.setCvDocumentIds(new ArrayList<>());
+        }
+        applicationsEntity.getCvDocumentIds().add(cvId);
+
         //applicationsEntity.setSystemCreatedBy(applicationsDto.getSystemCreatedBy());
 
 
