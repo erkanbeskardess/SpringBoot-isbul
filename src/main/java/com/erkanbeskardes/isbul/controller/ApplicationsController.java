@@ -17,8 +17,13 @@ public class ApplicationsController {
 
     @PostMapping
     public ResponseEntity<String> createApplication(@RequestBody ApplicationsDto dto) {
-       String code = applicationService.createApplication(dto);
+        String code = applicationService.createApplication(dto);
         return ResponseEntity.ok().body(code);
+    }
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<String> updateApplicationStatus(@RequestBody String role, @PathVariable Long id) {
+        return applicationService.changeRoleStatus(id, role);
     }
 
     @GetMapping("/{id}")
@@ -37,6 +42,7 @@ public class ApplicationsController {
         applicationService.apply(applicationDto);
         return "Application submitted successfully!";
     }
+
 
     //@PreAuthorize("hasRole('APPLICANT')")
     @GetMapping("/status/{randomCode}")

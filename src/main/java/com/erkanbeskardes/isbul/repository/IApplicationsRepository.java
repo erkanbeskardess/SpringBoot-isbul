@@ -17,6 +17,10 @@ public interface IApplicationsRepository extends JpaRepository<ApplicationsEntit
 
     ApplicationsEntity findByUserId(@Param("userId") Long userId);
 
+    @Modifying
+    @Query(value = "UPDATE applications SET application_status_type = :newRoleStatus WHERE id = :applicationId", nativeQuery = true)
+    Integer updateRoleStatus(@Param("applicationId") Long applicationId, @Param("newRoleStatus") String status);
+
     @Query(value = "SELECT random_code FROM applications WHERE job_postings_id = :JobPostingId AND user_id = :userId", nativeQuery = true)
     String getRandomCodeByJobPostingIdAndUserId(@Param("JobPostingId") Long JobPostingId, @Param("userId") Long userId);
 

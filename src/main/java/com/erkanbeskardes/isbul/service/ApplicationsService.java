@@ -41,7 +41,6 @@ public class ApplicationsService {
         applicationRepository.addCvIdToApplication(application.getJobPosting().getId(), application.getUser().getId(), dto.getCvId());
 
 
-
         if (checkApplication(dto, user.getId())) {
             return applicationRepository.getRandomCodeByJobPostingIdAndUserId(application.getJobPosting().getId(), user.getId()) + "1";
         }
@@ -50,7 +49,6 @@ public class ApplicationsService {
         SecureRandom secureRandom = new SecureRandom();
         Integer code = 100000 + secureRandom.nextInt(900000);
         application.setRandomCode(String.valueOf(code));
-
 
 
         applicationRepository.save(application);
@@ -62,6 +60,21 @@ public class ApplicationsService {
         user.getApplicationIds().add(application.getId());
         usersRepository.save(user);
         return String.valueOf(code);
+    }
+
+    @Transactional
+    public ResponseEntity<String> changeRoleStatus(Long applicationId, String newRoleStatus) {
+        String output = newRoleStatus.replace("\"", "");
+
+        Integer result = applicationRepository.updateRoleStatus(applicationId, output);
+
+        if (result == 1) {
+            return ResponseEntity.ok().body("Başvuru Durum Güncellemesi Başarılı");
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+
     }
 
     public ApplicationsDto getApplicationById(Long id) {
